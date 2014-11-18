@@ -27,9 +27,10 @@ Patches
 =======
 
 Please submit any patches against the openhab layer to the
-xxxx mailing list (xxxx@zzzz.org) and cc: the maintainer:
+yocto mailing list (https://lists.yoctoproject.org/listinfo/yocto) 
+and cc: the maintainer:
 
-Maintainer: XXX YYYYYY <xxx.yyyyyy@zzzzz.com>
+Maintainer: Ulf Winberg <ulfwin@gmail.com>
 
 
 Table of Contents
