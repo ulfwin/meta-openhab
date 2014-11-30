@@ -55,6 +55,7 @@ other layers needed. e.g.:
     /path/to/yocto/meta \
     /path/to/yocto/meta-yocto \
     /path/to/yocto/meta-yocto-bsp \
+    /path/to/yocto/meta-oracle-java \
     /path/to/yocto/meta-openhab \
     "
 
@@ -62,7 +63,9 @@ II. Misc
 ========
 
 Besides the openhab recipe, the java recipe corresponding to your target 
-architecture has to be added to IMAGE_INSTALL
+architecture has to be added to IMAGE_INSTALL in your image recipe. e.g.:
+
+IMAGE_INSTALL_append = " oracle-jse-ejre-arm-vfp-hflt-client-headless openhab"
 
 Both runtime and addon files are installed, but the addons you prefer
 to use must be copied manually from /usr/openhab-addons to 
