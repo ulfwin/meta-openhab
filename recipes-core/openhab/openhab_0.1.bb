@@ -30,16 +30,16 @@ PR = "r0"
 #}
 
 
-SRC_URI = "https://github.com/openhab/openhab/releases/download/v1.5.1/distribution-1.5.1-runtime.zip \
-           https://github.com/openhab/openhab/releases/download/v1.5.1/distribution-1.5.1-addons.zip"
+SRC_URI = "https://github.com/openhab/openhab/releases/download/v1.5.1/distribution-1.5.1-runtime.zip;name=java-runtime \
+           https://github.com/openhab/openhab/releases/download/v1.5.1/distribution-1.5.1-addons.zip;name=java-addons"
 
 # runtime package
-SRC_URI[md5sum] = "761af37608deba46c3dade42936238a1"
-SRC_URI[sha256sum] = "1dad0a5e1b101db07560220beffe24d1ce418498368958b0d007e145f9adf632"
+SRC_URI[java-runtime.md5sum] = "761af37608deba46c3dade42936238a1"
+SRC_URI[java-runtime.sha256sum] = "1dad0a5e1b101db07560220beffe24d1ce418498368958b0d007e145f9adf632"
 
 # Addon package
-SRC_URI[md5sum] = "3cf016595a92ba302a46fc347069f6d9"
-SRC_URI[sha256sum] = "4a3402f79a943ef25ede865cd40095abbad33626bdd91d32d13e32ebaec8b77b"
+SRC_URI[java-addons.md5sum] = "3cf016595a92ba302a46fc347069f6d9"
+SRC_URI[java-addons.sha256sum] = "4a3402f79a943ef25ede865cd40095abbad33626bdd91d32d13e32ebaec8b77b"
 
 S = "${WORKDIR}"
 OH = "${S}/openhab-runtime"
