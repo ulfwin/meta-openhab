@@ -5,7 +5,30 @@ LICENSE = "EPL-1.0"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/EPL-1.0;md5=57f8d5e2b3e98ac6e088986c12bf94e6"
 PR = "r0"
 
-RDEPENDS_${PN} += "java2-runtime"
+# The below is supposed to add java as a dependency, and chose provider (the meta-oracle-java
+# layer provides one recipe per architecture). However, for some reason the the PREFERRED_PROVIDER
+# is not noticed, even if it's manually chosen as the line below. Therefore it's commented out.
+#PREFERRED_PROVIDER_java2-runtime = "oracle-jse-ejre-arm-vfp-hflt-client-headless"
+#JAVA = "java2-runtime"
+#RDEPENDS_${PN} += "${JAVA}"
+#
+#python () {
+#	# Choose preferred provider based on target architecture
+#	TA = d.getVar('TARGET_ARCH', True)
+#	if TA == "arm":
+#		javaPkg = "oracle-jse-ejre-arm-vfp-hflt-client-headless"
+#	elif TA == "i586":
+#		javaPkg = "oracle-jse-jre-i586"
+#	elif TA == "x86_64":
+#		javaPkg = "oracle-jse-jre-x86-64"
+#	else:
+#		raise error("The target architecture '%s' is not supported by the meta-oracle-java layer" %TA)
+#
+#	# Set preferred provider
+#	JV = d.getVar('JAVA', True)
+#	d.setVar('PREFERRED_PROVIDER_' + JV, javaPkg)
+#}
+
 
 SRC_URI = "https://github.com/openhab/openhab/releases/download/v1.5.1/distribution-1.5.1-runtime.zip \
            https://github.com/openhab/openhab/releases/download/v1.5.1/distribution-1.5.1-addons.zip"
