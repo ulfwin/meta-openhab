@@ -58,9 +58,11 @@ other layers needed. e.g.:
     /path/to/yocto/meta-openhab \
     "
 
-
 II. Misc
 ========
+
+Besides the openhab recipe, the java recipe corresponding to your target 
+architecture has to be added to IMAGE_INSTALL
 
 Both runtime and addon files are installed, but the addons you prefer
 to use must be copied manually from /usr/openhab-addons to 
