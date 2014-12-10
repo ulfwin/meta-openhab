@@ -1,45 +1,22 @@
-ESCRIPTION = "openHAB home automation recipe including addons. Note that wanted addons \
+DESCRIPTION = "openHAB home automation recipe including addons. Note that wanted addons \
               has to be manually copied over to the openhab/addons folder"
 HOMEPAGE = "http://www.openhab.org"
 LICENSE = "EPL-1.0"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/EPL-1.0;md5=57f8d5e2b3e98ac6e088986c12bf94e6"
 PR = "r0"
 
-# The below is supposed to add java as a dependency, and chose provider (the meta-oracle-java
-# layer provides one recipe per architecture). However, for some reason the the PREFERRED_PROVIDER
-# is not noticed, even if it's manually chosen as the line below. Therefore it's commented out.
-#PREFERRED_PROVIDER_java2-runtime = "oracle-jse-ejre-arm-vfp-hflt-client-headless"
-#JAVA = "java2-runtime"
-#RDEPENDS_${PN} += "${JAVA}"
-#
-#python () {
-#	# Choose preferred provider based on target architecture
-#	TA = d.getVar('TARGET_ARCH', True)
-#	if TA == "arm":
-#		javaPkg = "oracle-jse-ejre-arm-vfp-hflt-client-headless"
-#	elif TA == "i586":
-#		javaPkg = "oracle-jse-jre-i586"
-#	elif TA == "x86_64":
-#		javaPkg = "oracle-jse-jre-x86-64"
-#	else:
-#		raise error("The target architecture '%s' is not supported by the meta-oracle-java layer" %TA)
-#
-#	# Set preferred provider
-#	JV = d.getVar('JAVA', True)
-#	d.setVar('PREFERRED_PROVIDER_' + JV, javaPkg)
-#}
+RDEPENDS_${PN} += "java2-runtime"
 
-
-SRC_URI = "https://github.com/openhab/openhab/releases/download/v1.5.1/distribution-1.5.1-runtime.zip;name=java-runtime \
-           https://github.com/openhab/openhab/releases/download/v1.5.1/distribution-1.5.1-addons.zip;name=java-addons"
+SRC_URI = "https://github.com/openhab/openhab/releases/download/v1.5.1/distribution-1.5.1-runtime.zip;name=runtime \
+           https://github.com/openhab/openhab/releases/download/v1.5.1/distribution-1.5.1-addons.zip;name=addons"
 
 # runtime package
-SRC_URI[java-runtime.md5sum] = "761af37608deba46c3dade42936238a1"
-SRC_URI[java-runtime.sha256sum] = "1dad0a5e1b101db07560220beffe24d1ce418498368958b0d007e145f9adf632"
+SRC_URI[runtime.md5sum] = "761af37608deba46c3dade42936238a1"
+SRC_URI[runtime.sha256sum] = "1dad0a5e1b101db07560220beffe24d1ce418498368958b0d007e145f9adf632"
 
 # Addon package
-SRC_URI[java-addons.md5sum] = "3cf016595a92ba302a46fc347069f6d9"
-SRC_URI[java-addons.sha256sum] = "4a3402f79a943ef25ede865cd40095abbad33626bdd91d32d13e32ebaec8b77b"
+SRC_URI[addons.md5sum] = "3cf016595a92ba302a46fc347069f6d9"
+SRC_URI[addons.sha256sum] = "4a3402f79a943ef25ede865cd40095abbad33626bdd91d32d13e32ebaec8b77b"
 
 S = "${WORKDIR}"
 OH = "${S}/openhab-runtime"
@@ -69,11 +46,11 @@ python do_unpack() {
         raise bb.build.FuncFailed(e)
 }
 
-# Simply copy folders to /usr/
+# Simply copy folders to datadir
 do_install() {
-	install -d ${D}/${prefix}
-        cp -a ${OH} ${D}/${prefix}
-        cp -a ${OHaddons} ${D}/${prefix}
+	install -d ${D}/${datadir}
+        cp -a ${OH} ${D}/${datadir}
+        cp -a ${OHaddons} ${D}/${datadir}
 }
 
 # All the files are provided in a binaray package, and keeping all the
@@ -84,5 +61,5 @@ INSANE_SKIP_${PN} = "${ERROR_QA} ${WARN_QA}"
 # Inhibit warnings about files being stripped, we can't do anything about it.
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 
-FILES_${PN} = "/usr/openhab-addons /usr/openhab-runtime"
+FILES_${PN} = "${datadir}/openhab-addons ${datadir}/openhab-runtime"
 
