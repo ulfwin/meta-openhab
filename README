@@ -62,10 +62,10 @@ other layers needed. e.g.:
 II. Misc
 ========
 
-Besides the openhab recipe, the java recipe corresponding to your target 
-architecture has to be added to IMAGE_INSTALL in your image recipe. e.g.:
+screen is used to automatically start openHAB at boot, and needs to be added
+to IMAGE_ISNTALL in your image recipe. e.g.:
 
-IMAGE_INSTALL_append = " oracle-jse-ejre-arm-vfp-hflt-client-headless openhab"
+IMAGE_INSTALL_append = " screen"
 
 Both runtime and addon files are installed, but the addons you prefer
 to use must be copied manually from /usr/openhab-addons to 

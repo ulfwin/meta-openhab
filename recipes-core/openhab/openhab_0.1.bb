@@ -8,7 +8,8 @@ PR = "r0"
 RDEPENDS_${PN} += "java2-runtime"
 
 SRC_URI = "https://github.com/openhab/openhab/releases/download/v1.5.1/distribution-1.5.1-runtime.zip;name=runtime \
-           https://github.com/openhab/openhab/releases/download/v1.5.1/distribution-1.5.1-addons.zip;name=addons"
+           https://github.com/openhab/openhab/releases/download/v1.5.1/distribution-1.5.1-addons.zip;name=addons \
+           file://init"
 
 # runtime package
 SRC_URI[runtime.md5sum] = "761af37608deba46c3dade42936238a1"
@@ -22,13 +23,16 @@ S = "${WORKDIR}"
 OH = "${S}/openhab-runtime"
 OHaddons = "${S}/openhab-addons"
 
+# Add autostart ability
+inherit autotools update-rc.d
+INITSCRIPT_NAME = "openhab"
+INITSCRIPT_PARAMS = "defaults"
+
 # Need to rewrite unpack task, since we need the extracted files
 # in separate folders under WORKDIR.
 do_unpack[dirs] += "${OH} ${OHaddons}"
 python do_unpack() {
     src_uri = (d.getVar('SRC_URI', True) or "").split()
-    if len(src_uri) == 0:
-        return
 
     OHdir = d.getVar('OH', True)
     OHaddonsdir = d.getVar('OHaddons', True)
@@ -44,22 +48,30 @@ python do_unpack() {
         fetcher.unpack(OHaddonsdir)
     except bb.fetch2.BBFetchException as e:
         raise bb.build.FuncFailed(e)
+
+    # Handle any remaining files
+    src_uri = src_uri[2:]
+    if len(src_uri) == 0:
+        return
+
+    rootdir = d.getVar('WORKDIR', True)
+
+    try:
+        fetcher = bb.fetch2.Fetch(src_uri, d)
+        fetcher.unpack(rootdir)
+    except bb.fetch2.BBFetchException as e:
+        raise bb.build.FuncFailed(e)
 }
 
-# Simply copy folders to datadir
 do_install() {
+	# Simply copy folders to datadir
 	install -d ${D}/${datadir}
         cp -a ${OH} ${D}/${datadir}
         cp -a ${OHaddons} ${D}/${datadir}
+
+	# Add init script to allow autostart
+	install -d ${D}/${sysconfdir}/init.d
+	install -m 0755 ${S}/init ${D}/${sysconfdir}/init.d/openhab
 }
 
-# All the files are provided in a binaray package, and keeping all the
-# files in a single package causes packaging QA errors and warnings.
-# Avoid these packaging failure by skiping all the QA checks
-INSANE_SKIP_${PN} = "${ERROR_QA} ${WARN_QA}"
-
-# Inhibit warnings about files being stripped, we can't do anything about it.
-INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
-
-FILES_${PN} = "${datadir}/openhab-addons ${datadir}/openhab-runtime"
-
+FILES_${PN} = "${datadir}/openhab-addons ${datadir}/openhab-runtime ${sysconfdir}/init.d/openhab"

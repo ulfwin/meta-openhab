@@ -1,0 +1,55 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:   openHAB
+# Required-Start: $local_fs $remote_fs
+# Required-Stop:  $local_fs $remote_fs
+# Should-Start:   $network
+# Should-Stop:    $network
+# Default-Start:  2 3 4 5
+# Default-Stop:   0 1 6
+# Short-Description:    Start and stop openHAB in screen Session
+# Description:    This runs openHAB continuously in screen.
+### END INIT INFO
+# Set OH-User
+OHUSER=openhab
+# Set OH-Path
+OHPATH=/usr/share/openhab-runtime
+
+case "$1" in
+
+  start)
+        PID=`ps | grep openHAB | grep -v grep | awk '{print $1}'`
+        if [ "${PID}" != "" ]
+         then
+          echo openHAB-Screen scheint schon zu laufen! PID ist `pidof SCREEN`
+         else
+          echo "Starting openHAB"
+          cd ${OHPATH}
+          screen -S openHAB -dm  sh ./start.sh
+        fi
+        ;;
+  stop)
+        echo "Stopping openHAB"
+        screen -S openHAB -p 0 -X stuff "exit$(printf \\r)"
+        screen -S openHAB -p 0 -X stuff "y$(printf \\r)"
+        screen -S openHAB -p 0 -X stuff "exit$(printf \\r)"
+        PID=`ps | grep openHAB | grep -v grep | awk '{print $1}'`
+        while [ `ps | grep $PID | wc -l` -gt 1 ]
+         do
+          echo -n .
+          sleep 2
+         done
+        echo .
+        ;;
+  restart|force-reload)
+        echo "Restarting openHAB"
+        $0 stop
+        $0 start
+        ;;
+  *)
+        N=/etc/init.d/$NAME
+        echo "Usage: $N {start|stop|restart}" >&2
+        exit 1
+        ;;
+esac
+exit 0
