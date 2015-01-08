@@ -10,8 +10,6 @@
 # Short-Description:    Start and stop openHAB in screen Session
 # Description:    This runs openHAB continuously in screen.
 ### END INIT INFO
-# Set OH-User
-OHUSER=openhab
 # Set OH-Path
 OHPATH=/usr/share/openhab-runtime
 
