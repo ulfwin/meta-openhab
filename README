@@ -67,6 +67,10 @@ to IMAGE_ISNTALL in your image recipe. e.g.:
 
 IMAGE_INSTALL_append = " screen"
 
-Both runtime and addon files are installed, but the addons you prefer
-to use must be copied manually from /usr/openhab-addons to 
-/usr/openhab/addons
+Both runtime and addon files are installed. You can choose to manually copy
+the addons you want to {path to openhab}/addons, or specifying the addons 
+in the OPENHAB_ADDONS variable. For example, you can put the following in 
+your local.conf:
+
+OPENHAB_ADDONS = "action.xbmc binding.xbmc"
+

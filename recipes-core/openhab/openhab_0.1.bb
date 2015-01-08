@@ -69,6 +69,17 @@ do_install() {
         cp -a ${OH} ${D}/${datadir}
         cp -a ${OHaddons} ${D}/${datadir}
 
+	# Move desired addons
+	for addon in ${OPENHAB_ADDONS}
+	do
+		if [ -e "$(find ${OHaddons} -name "*${addon}*")" ]
+		then
+			cp $(find ${OHaddons} -name "*${addon}*") ${D}/${datadir}/openhab-runtime/addons
+		else
+			bbwarn "openHAB addon cannot be found: ${addon}"
+		fi
+	done
+
 	# Add init script to allow autostart
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/init ${D}/${sysconfdir}/init.d/openhab
