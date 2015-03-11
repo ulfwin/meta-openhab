@@ -7,10 +7,8 @@ PR = "r0"
 
 RDEPENDS_${PN} += "java2-runtime"
 
-OH_VERSION = "1.6.2"
-
-SRC_URI = "https://github.com/openhab/openhab/releases/download/v${OH_VERSION}/distribution-${OH_VERSION}-runtime.zip;name=runtime \
-           https://github.com/openhab/openhab/releases/download/v${OH_VERSION}/distribution-${OH_VERSION}-addons.zip;name=addons \
+SRC_URI = "https://github.com/openhab/openhab/releases/download/v${PV}/distribution-${PV}-runtime.zip;name=runtime \
+           https://github.com/openhab/openhab/releases/download/v${PV}/distribution-${PV}-addons.zip;name=addons \
            file://init"
 
 # runtime package
