@@ -22,6 +22,21 @@ This layer depends on:
   URI: git://git.yoctoproject.org/meta-oracle-java
   branch: master
 
+  ** Alternative Java repo
+  URI: https://github.com/jrbenito/meta-oracle-java.git
+  branch: master
+
+  The Yocto Project meta-oracle-java layer seems to  be not
+  working  anymore because  Oracle updated its  website and
+  also,  the version this  layer provides is not available.
+  To circumvent this I cloned the  repo above, upgraded the
+  recipe  pointing latest version available  at Oracle site
+  However,  since Oracle  now demands  one to  login before
+  download,  the recipe will  fail  do_fetch. Please follow
+  my repo README instructions in order to manually download
+  package; after that recipe will skip do_fetch and install
+  Java correctly.
+
 
 Patches
 =======
